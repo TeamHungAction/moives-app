@@ -1,0 +1,27 @@
+.page-wrapper {
+    min-height: 100vh;
+    /*background-color: blue;*/
+    padding-top: 56px;
+}
+
+#card-container {
+    height: 75vh;
+    width: auto;
+    border: 5px solid black;
+    /*border-radius: 100px;*/
+    /*overflow: hidden;*/
+}
+
+#pop-out-container {
+    height: 100vh;
+    width: 50%;
+    background-color: blue;
+}
+
+/*.hidden {*/
+/*    visibility: hidden;*/
+/*}*/
+
+/*.card-row {*/
+/*    background-color: blue;*/
+/*}*/
