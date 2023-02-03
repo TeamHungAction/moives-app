@@ -18,6 +18,17 @@
     background-color: blue;
 }
 
+.carousel-container {
+    height: 75vh;
+    background-color: blue;
+}
+
+.carousel-card {
+    padding: 35px;
+    height: 60vh;
+   flex-grow: 1;
+}
+
 /*.hidden {*/
 /*    visibility: hidden;*/
 /*}*/
