@@ -4,6 +4,8 @@
     // with your team name in the "js/movies-api.js" file.
     "use strict"
 
+    const movies = await getMovies();
+    console.log(movies);
 
     const writeHtml = () => {
 
@@ -49,8 +51,6 @@
 
     }
 
-    let movies = await getMovies();
-    console.log(movies);
     writeHtml();
 
     // btn for adding movies
@@ -72,8 +72,8 @@
             genre: `${genre}`,
         })
         $(`#unhidden`).toggleClass(`hidden`);
-        await getMovies()
-        writeHtml();
+        // writeHtml();
+
     });
 
 
