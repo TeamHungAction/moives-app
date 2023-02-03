@@ -3,33 +3,17 @@
     // Before you can use the database, you need to configure the "db" object
     // with your team name in the "js/movies-api.js" file.
     "use strict"
+
     const movies = await getMovies();
     console.log(movies);
 
-    let activeHtml = `<div class="carousel-item active">
-                            <div class="container d-flex carousel-card">
-                                <div class="row flex-grow-1 d-flex card-row">
-                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic">
-                                    </div>
-                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">
-                                        <section>
-                                            <h1 class="mb-4">${movies[0].title}</h1>
-                                            <h4 class="mb-2">${movies[0].director} - ${movies[0].year}</h4>
-                                            <h6>${movies[0].genre}</h6>
-                                            <h6>$</h6>
-                                        </section>
-                                        <section class="d-flex flex-row">
-                                             <button class="me-5 update-btn">UPDATE</button>
-                                            <button class="ms-5 delete-btn">DELETE</button>
-                                        </section>
-                                    </div>
-                                </div>
-                            </div>`
+    const writeHtml = () => {
 
     let dynamicHtml = ``;
 
-    for (let i = 1; i < movies.length; i += 1) {
-        dynamicHtml += `<div class="carousel-item">
+    for (let i = 0; i < movies.length; i++) {
+
+        dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
                                     <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic">
@@ -39,7 +23,7 @@
                                             <h1 class="mb-4">${movies[i].title}</h1>
                                             <h4 class="mb-2">${movies[i].director} - ${movies[i].year}</h4>
                                             <h6>${movies[i].genre}</h6>
-                                            <h6>$</h6>
+                                            <h6>Rating: ${movies[i].rating}</h6>
                                         </section>
                                         <section class="d-flex flex-row">
                                             <button class="me-5 update-btn">UPDATE</button>
@@ -60,11 +44,39 @@
                         <span class="visually-hidden">Next</span>
                     </button>`
 
-    console.log(activeHtml);
-    console.log(dynamicHtml);
-    console.log(btnHtml);
+    // console.log(dynamicHtml);
+    // console.log(btnHtml);
 
-    $(`.cards-here`).html(`<div class="carousel-inner"> ${activeHtml} ${dynamicHtml} </div> ${btnHtml}`);
+    $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
+
+    }
+
+    writeHtml();
+
+    // btn for adding movies
+    $('#add-btn').on('click', () => {
+        $(`#unhidden`).toggleClass(`hidden`)
+    })
+
+    $(`#movie-added`).on(`click`, async ()=>{
+        let title = $(`#title-user`).val();
+        let director = $(`#director-user`).val();
+        let year = $(`#year-user`).val();
+        let genre = $(`#genre-user`).val();
+        let rating = $(`#rating-user`).val();
+        await addMovie({
+            title: `${title}`,
+            year: `${year}`,
+            director: `${director}`,
+            rating: `${rating}`,
+            genre: `${genre}`,
+        })
+        $(`#unhidden`).toggleClass(`hidden`);
+        // writeHtml();
+
+    });
+
+
 
     // let html = ``;
     // movies.forEach((movie)=>{
