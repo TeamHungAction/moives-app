@@ -19,14 +19,14 @@
                                     <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic"></div>
                                     <div class="col-6 d-flex justify-content-between flex-column pt-5">
                                         <section>
-                                            <h1 class="mb-4">${movies[i].title}</h1>
-                                            <h4 class="mb-2">${movies[i].director} - ${movies[i].year}</h4>
-                                            <h6>${movies[i].genre}</h6>
-                                            <h6>Rating: ${movies[i].rating}</h6>
+                                            <h1 class="mb-4 mov-title">${movies[i].title}</h1>
+                                            <h3 class="mb-2 mov-director">${movies[i].director} - ${movies[i].year}</h3>
+                                            <h5 class="mov-genre mt-5">${movies[i].genre}</h5>
+                                            <h5 class="mov-rating mt-2">Rating: ${movies[i].rating}</h5>
                                             <p class='hidden'>${movies[i].id}</p>
                                         </section>
                                         <section class="d-flex flex-row">
-                                            <button class="me-5 update-btn update-user">UPDATE</button>
+                                            <button class="me-5 update-btn update-user" id="update-btn">UPDATE</button>
                                             <button class="ms-5 delete-btn delete-user">DELETE</button>
                                         </section>
                                     </div>
@@ -88,6 +88,7 @@
     $(document).on(`click`, '.update-user', function () {
         let currentID = $(this).parents('.carousel-item').attr('data-movie');
         $(`#update-unhidden`).toggleClass(`hidden`);
+        // $(`#update-btn`).toggleClass(`hidden`);
         $(`#movie-update`).on(`click`, async () => {
             let title = ($(`#title-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-title') : $('#title-update').val());
             let director = ($(`#director-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-director') : $('#director-update').val());
@@ -104,49 +105,8 @@
                 genre: genre
             })
             location.reload();
+            // $(`#update-btn`).toggleClass(`hidden`);
             $(`#update-unhidden`).toggleClass(`hidden`);
         });
     });
-
-    // let html = ``;
-    // movies.forEach((movie)=>{
-    //     html += `<div class="card m-2" style="width: 18rem;">
-    //                 <img src="img/jurrasic-park-poster.jpeg" class="card-img-top" alt="...">
-    //                 <div class="card-body">
-    //                     <h3 class="card-title">${movie.title}</h3>
-    //                     <h5>${movie.director} - ${movie.year}</h5>
-    //                     <p class="card-text">*****${movie.rating}</p>
-    //                     <a href="#" class="btn btn-danger" id="delete-btn">Delete</a>
-    //                 </div>
-    //             </div>`
-    // });
-    //
-    // $(`#movie-cards`).html(html);
-
-
-    // $(`#delete-btn`).on(`click`, ()=>{
-    //     deleteMovie()
-    // })
-
-    // await deleteMovie({
-    //     id: "0LDz3lbnTbvffQWwMOdb"
-    // });
-
-    // await updateMovie({
-    //     id: 'GbBq6P1Jc9yCXmWRSnvP',
-    //     year: '1972'
-    // })
-
-
-    //  movie object structure
-    // {
-    //     title: 'The Shawshank Redemption',
-    //         year: 1994,
-    //     director: 'Frank Darabont',
-    //     rating: 9.3,
-    //     runtime: 142,
-    //     genre: 'Drama',
-    //     actors: 'Tim Robbins, Morgan Freeman, Bob Gunton, William Sadler',
-    // },
-    //
 })();

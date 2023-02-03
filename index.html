@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movies App</title>
+
+    <!--    fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat&family=Kavoon&family=Righteous&display=swap"
+          rel="stylesheet">
     <!--Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"/>
@@ -15,94 +21,25 @@
 
 <div class="page-wrapper">
 
+    <header class="container-fluid header">
+        <div class="row">
+            <div class="col d-flex justify-content-center mb-5">
+                <h1>My Favorite Movies</h1>
+            </div>
+        </div>
+    </header>
+
     <div class="container d-flex justify-content-center carousel-container">
         <div class="row flex-grow-1 d-flex align-content-center">
             <div class="col flex-grow-1 justify-content-center">
                 <div id="carousel" class="carousel slide d-flex flex-grow-1 cards-here">
-<!--                    <div class="carousel-inner" id="cards-here">-->
-
-<!--                        card active-->
-<!--                        <div class="carousel-item active">-->
-<!--                            <div class="container d-flex carousel-card">-->
-<!--                                <div class="row flex-grow-1 d-flex card-row">-->
-<!--                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic">-->
-<!--                                    </div>-->
-<!--                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">-->
-<!--                                        <section>-->
-<!--                                            <h1 class="mb-4">${movie.title}</h1>-->
-<!--                                            <h4 class="mb-2">${movie.director} - ${movie.year}</h4>-->
-<!--                                            <h6>${movie.genre}</h6>-->
-<!--                                            <h6>$</h6>-->
-<!--                                        </section>-->
-<!--                                        <section class="d-flex flex-row">-->
-<!--                                             <button class="me-5 update-btn">UPDATE</button>-->
-<!--                                            <button class="ms-5 delete-btn">DELETE</button>-->
-<!--                                        </section>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--&lt;!&ndash;                        card dynamic 1&ndash;&gt;-->
-<!--                        <div class="carousel-item">-->
-<!--                            <div class="container d-flex carousel-card">-->
-<!--                                <div class="row flex-grow-1 d-flex card-row">-->
-<!--                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic">-->
-<!--                                    </div>-->
-<!--                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">-->
-<!--                                        <section>-->
-<!--                                            <h1 class="mb-4">${movie.title}</h1>-->
-<!--                                            <h4 class="mb-2">${movie.director} - ${movie.year}</h4>-->
-<!--                                            <h6>${movie.genre}</h6>-->
-<!--                                            <h6>$</h6>-->
-<!--                                        </section>-->
-<!--                                        <section class="d-flex flex-row">-->
-<!--                                            <button class="me-5 update-btn">UPDATE</button>-->
-<!--                                            <button class="ms-5 delete-btn">DELETE</button>-->
-<!--                                        </section>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--&lt;!&ndash;                        card dynamic 2 &ndash;&gt;-->
-<!--                        <div class="carousel-item">-->
-<!--                            <div class="container d-flex carousel-card">-->
-<!--                                <div class="row flex-grow-1 d-flex card-row">-->
-<!--                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic">-->
-<!--                                    </div>-->
-<!--                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">-->
-<!--                                        <section>-->
-<!--                                            <h1 class="mb-4">${movie.title}</h1>-->
-<!--                                            <h4 class="mb-2">${movie.director} - ${movie.year}</h4>-->
-<!--                                            <h6>${movie.genre}</h6>-->
-<!--                                            <h6>$</h6>-->
-<!--                                        </section>-->
-<!--                                        <section class="d-flex flex-row">-->
-<!--                                             <button class="me-5 update-btn">UPDATE</button>-->
-<!--                                            <button class="ms-5 delete-btn">DELETE</button>-->
-<!--                                        </section>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-
-<!--                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">-->
-<!--                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--                        <span class="visually-hidden">Previous</span>-->
-<!--                    </button>-->
-<!--                    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">-->
-<!--                        <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--                        <span class="visually-hidden">Next</span>-->
-<!--                    </button>-->
+                    <!--Movie cards written in dynamically here-->
                 </div>
             </div>
         </div>
     </div>
 
-<!--    add btn-->
+    <!--    add btn-->
     <div class="container d-flex mt-5">
         <div class="row d-flex flex-grow-1 mt-4">
             <div class="col d-flex justify-content-center">
@@ -111,40 +48,36 @@
         </div>
     </div>
     <!-- add movies -->
-<!--    <div class ="container add-movies">-->
-        <div class="container add-movies hidden" id="unhidden">
-            <div class="row d-flex">
+    <div class="container add-movies hidden add-movie-container" id="unhidden">
+        <div class="row d-flex">
 
-                    <form id="add-movie" class="d-flex flex-column">
-                        <input  class="mt-2" type="text" id="title-user" placeholder="Title">
-                        <input  class="mt-2" type="text" id="director-user" placeholder="Director">
-                        <input  class="mt-2" type="text" id="year-user" placeholder="Year made">
-                        <input  class="mt-2" type="text" id="genre-user" placeholder="Genre">
-                        <input  class="mt-2" type="text" id="rating-user" placeholder="Rating">
-                        <button class="mt-2" id="movie-added" type="button">Submit</button>
-                    </form>
+            <form id="add-movie" class="d-flex flex-column">
+                <input class="mt-2" type="text" id="title-user" placeholder="Title">
+                <input class="mt-2" type="text" id="director-user" placeholder="Director">
+                <input class="mt-2" type="text" id="year-user" placeholder="Year made">
+                <input class="mt-2" type="text" id="genre-user" placeholder="Genre">
+                <input class="mt-2" type="text" id="rating-user" placeholder="Rating">
+                <button class="mt-2" id="movie-added" type="button">Submit</button>
+            </form>
 
-            </div>
         </div>
-<!--    </div>-->
+    </div>
 
-    <!--    <div class ="container update-movies">-->
+    <!-- update-movies">-->
     <div class="container add-movies hidden" id="update-unhidden">
         <div class="row d-flex">
 
             <form id="update-movie" class="d-flex flex-column">
-                <input  class="mt-2 title-update" type="text" id="title-update" placeholder="Title">
-                <input  class="mt-2 director-update" type="text" id="director-update" placeholder="Director">
-                <input  class="mt-2 year-update" type="text" id="year-update" placeholder="Year made">
-                <input  class="mt-2 genre-update" type="text" id="genre-update" placeholder="Genre">
-                <input  class="mt-2 rating-update" type="text" id="rating-update" placeholder="Rating">
+                <input class="mt-2 title-update" type="text" id="title-update" placeholder="Title">
+                <input class="mt-2 director-update" type="text" id="director-update" placeholder="Director">
+                <input class="mt-2 year-update" type="text" id="year-update" placeholder="Year made">
+                <input class="mt-2 genre-update" type="text" id="genre-update" placeholder="Genre">
+                <input class="mt-2 rating-update" type="text" id="rating-update" placeholder="Rating">
                 <button class="mt-2" id="movie-update" type="button">Submit</button>
             </form>
 
         </div>
     </div>
-    <!--    </div>-->
-
 
 
 
@@ -155,7 +88,9 @@
 <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-firestore.js"></script>
 
 <!--bootstrap script-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 <!-- A local JS file to store the firebase API Key. WARNING: Do not commit this file -->
 <script src="js/keys.js"></script>
 
