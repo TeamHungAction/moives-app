@@ -10,10 +10,10 @@
     // To innerHTML
     const writeHtml = () => {
 
-    let dynamicHtml = ``;
+        let dynamicHtml = ``;
 
-    for (let i = 0; i < movies.length; i++) {
-        dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}">
+        for (let i = 0; i < movies.length; i++) {
+            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}" data-title="${movies[i].title}" data-year="${movies[i].year}" data-genre="${movies[i].genre}" data-rating="${movies[i].rating}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
                                     <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic"></div>
@@ -26,16 +26,16 @@
                                             <p class='hidden'>${movies[i].id}</p>
                                         </section>
                                         <section class="d-flex flex-row">
-                                            <button class="me-5 update-btn">UPDATE</button>
+                                            <button class="me-5 update-btn update-user">UPDATE</button>
                                             <button class="ms-5 delete-btn delete-user">DELETE</button>
                                         </section>
                                     </div>
                                 </div>
                             </div>
                         </div>`
-    }
+        }
 
-    let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+        let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
@@ -44,10 +44,8 @@
                         <span class="visually-hidden">Next</span>
                     </button>`
 
-    // console.log(dynamicHtml);
-    // console.log(btnHtml);
 
-    $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
+        $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
 
     }
 
@@ -59,7 +57,7 @@
         $(`#unhidden`).toggleClass(`hidden`)
     })
 
-    $(`#movie-added`).on(`click`, async ()=>{
+    $(`#movie-added`).on(`click`, async () => {
         let title = $(`#title-user`).val();
         let director = $(`#director-user`).val();
         let year = $(`#year-user`).val();
@@ -78,14 +76,37 @@
 
     // btn for deleting movie
 
-        $(document).on('click', '.delete-user', async function() {
-            let currentID = $(this).parents('.carousel-item').attr('data-movie');
-            await deleteMovie({
-                id: currentID
+    $(document).on('click', '.delete-user', async function () {
+        let currentID = $(this).parents('.carousel-item').attr('data-movie');
+        await deleteMovie({
+            id: currentID
+        })
+        location.reload();
+    })
+
+    // btn for updating movie
+    $(document).on(`click`, '.update-user', function () {
+        let currentID = $(this).parents('.carousel-item').attr('data-movie');
+        $(`#update-unhidden`).toggleClass(`hidden`);
+        $(`#movie-update`).on(`click`, async () => {
+            let title = ($(`#title-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-title') : $('#title-update').val());
+            let director = ($(`#director-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-director') : $('#director-update').val());
+            let year = ($(`#year-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-year') : $('#year-update').val());
+            let genre = ($(`#genre-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-genre') : $('#genre-update').val());
+            let rating = ($(`#rating-update`).val() === "" ? $(this).parents('.carousel-item').attr('data-rating') : $('#rating-update').val());
+
+            await updateMovie({
+                id: currentID,
+                title: title,
+                year: year,
+                director: director,
+                rating: rating,
+                genre: genre
             })
             location.reload();
-        })
-
+            $(`#update-unhidden`).toggleClass(`hidden`);
+        });
+    });
 
     // let html = ``;
     // movies.forEach((movie)=>{
