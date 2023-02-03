@@ -1,9 +1,85 @@
+/*element tags*/
+button {
+    font-size: 20px;
+    border: 3px solid black;
+    border-radius: 10px;
+    color: blue;
+}
+
+h1 {
+    font-size: 75px;
+    text-shadow: 2px 2px black;
+    color: white;
+    font-family: 'Kavoon', cursive;
+}
+
+/*class tags*/
 .page-wrapper {
     min-height: 100vh;
     /*background-color: blue;*/
     padding-top: 56px;
+    background-image: url("../img/movie-app-bg.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
+.header {
+    /*background-color: blue;*/
+    color: white;
+}
+
+.carousel-container {
+    height: 733px;
+    background-color: rgba(128, 128, 128, 0.44);
+    border-radius: 15px;
+}
+
+.mov-director {
+
+    color: white;
+    font-family: 'Righteous', cursive;
+    text-shadow: 1px 1px black;
+}
+
+.mov-genre {
+    color: white;
+    font-family: 'Righteous', cursive;
+}
+
+.mov-rating {
+    color: white;
+    font-family: 'Righteous', cursive;
+}
+
+.carousel-card {
+    padding: 35px;
+    height: 60vh;
+   flex-grow: 1;
+}
+
+.add-movies {
+    height: 234px;
+    width: 574px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: rgba(128, 132, 134, 0.92);
+    z-index: 1;
+    position: fixed;
+    right: -103px;
+    left: 0;
+    top: 37.78em;
+    bottom: 0;
+    border-radius: 15px;
+    /*visibility: hidden;*/
+
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/*id tags*/
 #card-container {
     height: 75vh;
     width: auto;
@@ -15,50 +91,12 @@
 #pop-out-container {
     height: 100vh;
     width: 50%;
-    background-color: blue;
+    /*background-color: blue;*/
 }
 
-.carousel-container {
-    height: 733px;
-    background-color: blue;
-}
+/*fonts*/
 
-.carousel-card {
-    padding: 35px;
-    height: 60vh;
-   flex-grow: 1;
-}
-
-/*.hidden {*/
-/*    visibility: hidden;*/
-/*}*/
-
-/*.card-row {*/
-/*    background-color: blue;*/
-/*}*/
-.add-movies {
-    height: 689px;
-    width: 1159px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    background-color: #808486;
-    z-index: 1;
-    position: fixed;
-    right: -10px;
-    left: 0;
-    top: 4.8em;
-    bottom: 0;
-    /*visibility: hidden;*/
-
-}
-
-.hidden {
-    visibility: hidden;
-}
-
-
-/*#add-movie{*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*}*/
+/*font-family: 'Anton', sans-serif;*/
+/*font-family: 'Caveat', cursive;*/
+/*font-family: 'Kavoon', cursive;*/
+/*font-family: 'Righteous', cursive;*/
