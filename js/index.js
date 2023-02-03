@@ -7,27 +7,27 @@
     const movies = await getMovies();
     console.log(movies);
 
+    // To innerHTML
     const writeHtml = () => {
 
     let dynamicHtml = ``;
 
     for (let i = 0; i < movies.length; i++) {
-
-        dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}">
+        dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
-                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic">
-                                    </div>
+                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic"></div>
                                     <div class="col-6 d-flex justify-content-between flex-column pt-5">
                                         <section>
                                             <h1 class="mb-4">${movies[i].title}</h1>
                                             <h4 class="mb-2">${movies[i].director} - ${movies[i].year}</h4>
                                             <h6>${movies[i].genre}</h6>
                                             <h6>Rating: ${movies[i].rating}</h6>
+                                            <p class='hidden'>${movies[i].id}</p>
                                         </section>
                                         <section class="d-flex flex-row">
                                             <button class="me-5 update-btn">UPDATE</button>
-                                            <button class="ms-5 delete-btn">DELETE</button>
+                                            <button class="ms-5 delete-btn delete-user">DELETE</button>
                                         </section>
                                     </div>
                                 </div>
@@ -51,6 +51,7 @@
 
     }
 
+    // Calling the function
     writeHtml();
 
     // btn for adding movies
@@ -71,11 +72,19 @@
             rating: `${rating}`,
             genre: `${genre}`,
         })
+        location.reload();
         $(`#unhidden`).toggleClass(`hidden`);
-        // writeHtml();
-
     });
 
+    // btn for deleting movie
+
+        $(document).on('click', '.delete-user', async function() {
+            let currentID = $(this).parents('.carousel-item').attr('data-movie');
+            await deleteMovie({
+                id: currentID
+            })
+            location.reload();
+        })
 
 
     // let html = ``;
