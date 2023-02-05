@@ -52,6 +52,56 @@
     // Calling the function
     writeHtml();
 
+    //Filter and search function
+    $('#submit').on('click', (e) =>{
+        e.preventDefault();
+        let searchValue = $('#search').val();
+        let inputValue = [];
+        let dynamicHtml = ``;
+        for (let i = 0 ; i < movies.length ; i += 1){
+            let movieGenre = movies[i].genre.split(", ");
+            console.log (movieGenre[1]);
+            if(movies[i].title.toLowerCase() === searchValue || movies[i].year === searchValue || movieGenre[0].toLowerCase() === searchValue || movieGenre[1].toLowerCase() === searchValue){
+                inputValue.push(movies[i]);
+            }
+        }
+        console.log(inputValue);
+        for (let i = 0 ; i < inputValue.length ; i += 1){
+            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}">
+                            <div class="container d-flex carousel-card">
+                                <div class="row flex-grow-1 d-flex card-row">
+                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic"></div>
+                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">
+                                        <section>
+                                            <h1 class="mb-4 mov-title">${inputValue[i].title}</h1>
+                                            <h3 class="mb-2 mov-director">${inputValue[i].director} - ${inputValue[i].year}</h3>
+                                            <h5 class="mov-genre mt-5">${inputValue[i].genre}</h5>
+                                            <h5 class="mov-rating mt-2">Rating: ${inputValue[i].rating}</h5>
+                                            <p class='hidden'>${inputValue[i].id}</p>
+                                        </section>
+                                        <section class="d-flex flex-row">
+                                            <button class="me-5 update-btn update-user" id="update-btn">UPDATE</button>
+                                            <button class="ms-5 delete-btn delete-user">DELETE</button>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+        }
+        let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>`
+
+
+        $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
+
+    })
+
     // btn for adding movies
     $('#add-btn').on('click', () => {
         $(`#unhidden`).toggleClass(`hidden`)
