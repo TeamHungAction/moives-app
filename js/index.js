@@ -6,35 +6,34 @@
 
     // collects movie list from database
     const movies = await getMovies();
-    console.log(movies);
+    // console.log(movies);
 
     // creates array of movie titles
     const movieTitles = movies.map((movie) => {
         return movie.title;
     });
-    console.log(movieTitles);
+    // console.log(movieTitles);
 
     // Contacts movie poster api to generate poster images for movies
     // maps result to create arr of just the poster images
     let moviePosters = [];
-
     const getThePosters = async () => {
-    for (let i = 0; i < movieTitles.length; i += 1) {
-        await $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&query=" + `${movieTitles[i]}` + "&callback=?", function (json) {
-            let posterData = '';
-            if (json != "Nothing found.") {
-                console.log(json.results[0].poster_path); //looks like usable data
-                posterData = json.results[0].poster_path;
-                moviePosters.push(posterData);
-            }
-        });
+        for (let i = 0; i < movieTitles.length; i += 1) {
+            await $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&query=" + `${movieTitles[i]}` + "&callback=?", function (json) {
+                let posterData = '';
+                if (json != "Nothing found.") {
+                    // console.log(json.results[0].poster_path);
+                    posterData = json.results[0].poster_path;
+                    moviePosters.push(posterData);
+                }
+            });
+        }
     }
-    }
+
+    console.log(moviePosters)
 
     await getThePosters();
 
-
-    console.log(moviePosters)
 
     // Creates and dynamically writes html based of movies array
     const writeHtml = () => {
@@ -81,54 +80,24 @@
     // Calling the function to write the html
     writeHtml();
 
+    // end of page load
+
+    // event listeners
+
     //Filter and search function
-    $('#submit').on('click', (e) => {
+    $(document).on('click', `#submit`, (e) => {
         e.preventDefault();
+        console.log(`btn clicked`);
         let searchValue = $('#search').val();
-        let inputValue = [];
-        let dynamicHtml = ``;
-        for (let i = 0; i < movies.length; i += 1) {
-            let movieGenre = movies[i].genre.split(", ");
-            console.log(movieGenre[1]);
-            if (movies[i].title.toLowerCase() === searchValue || movies[i].year === searchValue || movieGenre[0].toLowerCase() === searchValue || movieGenre[1].toLowerCase() === searchValue) {
-                inputValue.push(movies[i]);
-            }
-        }
-        console.log(inputValue);
-        for (let i = 0; i < inputValue.length; i += 1) {
-            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}">
-                            <div class="container d-flex carousel-card">
-                                <div class="row flex-grow-1 d-flex card-row">
-                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic"></div>
-                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">
-                                        <section>
-                                            <h1 class="mb-4 mov-title">${inputValue[i].title}</h1>
-                                            <h3 class="mb-2 mov-director">${inputValue[i].director} - ${inputValue[i].year}</h3>
-                                            <h5 class="mov-genre mt-5">${inputValue[i].genre}</h5>
-                                            <h5 class="mov-rating mt-2">Rating: ${inputValue[i].rating}</h5>
-                                            <p class='hidden'>${inputValue[i].id}</p>
-                                        </section>
-                                        <section class="d-flex flex-row">
-                                            <button class="me-5 update-btn update-user" id="update-btn">UPDATE</button>
-                                            <button class="ms-5 delete-btn delete-user">DELETE</button>
-                                        </section>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`
-        }
-        let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>`
-
-
-        $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
-
+        console.log(searchValue);
+        $('[data-title]').each(function(){
+           let title = $(this).attr('data-title');
+           if (title.toLowerCase() === searchValue.toLowerCase()){
+               // found a card with a matching title
+               $('[data-title].active').removeClass('active');
+               $(this).addClass('active');
+           }
+        });
     })
 
     // btn for adding movies
