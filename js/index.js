@@ -4,10 +4,39 @@
     // with your team name in the "js/movies-api.js" file.
     "use strict"
 
+    // collects movie list from database
     const movies = await getMovies();
     console.log(movies);
 
-    // To innerHTML
+    // creates array of movie titles
+    const movieTitles = movies.map((movie) => {
+        return movie.title;
+    });
+    console.log(movieTitles);
+
+    // Contacts movie poster api to generate poster images for movies
+    // maps result to create arr of just the poster images
+    let moviePosters = [];
+
+    const getThePosters = async () => {
+    for (let i = 0; i < movieTitles.length; i += 1) {
+        await $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&query=" + `${movieTitles[i]}` + "&callback=?", function (json) {
+            let posterData = '';
+            if (json != "Nothing found.") {
+                console.log(json.results[0].poster_path); //looks like usable data
+                posterData = json.results[0].poster_path;
+                moviePosters.push(posterData);
+            }
+        });
+    }
+    }
+
+    await getThePosters();
+
+
+    console.log(moviePosters)
+
+    // Creates and dynamically writes html based of movies array
     const writeHtml = () => {
 
         let dynamicHtml = ``;
@@ -16,8 +45,8 @@
             dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}" data-title="${movies[i].title}" data-year="${movies[i].year}" data-genre="${movies[i].genre}" data-rating="${movies[i].rating}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
-                                    <div class="col-6 d-flex justify-content-center"><img src="img/jurrasic-park-poster.jpeg" alt="jurrasic"></div>
-                                    <div class="col-6 d-flex justify-content-between flex-column pt-5">
+                                    <div class="col-6 d-flex justify-content-center"><img src="http://image.tmdb.org/t/p/w500/${moviePosters[i]}" class="poster-img" alt="current poster image"></div>
+                                    <div class="col-6 d-flex justify-content-between flex-column">
                                         <section>
                                             <h1 class="mb-4 mov-title">${movies[i].title}</h1>
                                             <h3 class="mb-2 mov-director">${movies[i].director} - ${movies[i].year}</h3>
@@ -25,9 +54,9 @@
                                             <h5 class="mov-rating mt-2">Rating: ${movies[i].rating}</h5>
                                             <p class='hidden'>${movies[i].id}</p>
                                         </section>
-                                        <section class="d-flex flex-row">
-                                            <button class="me-5 update-btn update-user" id="update-btn">UPDATE</button>
-                                            <button class="ms-5 delete-btn delete-user">DELETE</button>
+                                        <section class="d-flex flex-row pb-1">
+                                            <button class="me-5 update-btn update-user" id="update-btn">Update</button>
+                                            <button class="ms-5 delete-btn delete-user">Delete</button>
                                         </section>
                                     </div>
                                 </div>
@@ -49,24 +78,24 @@
 
     }
 
-    // Calling the function
+    // Calling the function to write the html
     writeHtml();
 
     //Filter and search function
-    $('#submit').on('click', (e) =>{
+    $('#submit').on('click', (e) => {
         e.preventDefault();
         let searchValue = $('#search').val();
         let inputValue = [];
         let dynamicHtml = ``;
-        for (let i = 0 ; i < movies.length ; i += 1){
+        for (let i = 0; i < movies.length; i += 1) {
             let movieGenre = movies[i].genre.split(", ");
-            console.log (movieGenre[1]);
-            if(movies[i].title.toLowerCase() === searchValue || movies[i].year === searchValue || movieGenre[0].toLowerCase() === searchValue || movieGenre[1].toLowerCase() === searchValue){
+            console.log(movieGenre[1]);
+            if (movies[i].title.toLowerCase() === searchValue || movies[i].year === searchValue || movieGenre[0].toLowerCase() === searchValue || movieGenre[1].toLowerCase() === searchValue) {
                 inputValue.push(movies[i]);
             }
         }
         console.log(inputValue);
-        for (let i = 0 ; i < inputValue.length ; i += 1){
+        for (let i = 0; i < inputValue.length; i += 1) {
             dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
