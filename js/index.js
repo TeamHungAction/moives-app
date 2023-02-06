@@ -4,44 +4,45 @@
     // with your team name in the "js/movies-api.js" file.
     "use strict"
 
-    // collects movie list from database
-    const movies = await getMovies();
-    // console.log(movies);
+    const pageLoader = async () => {
+        // collects movie list from database
+        const movies = await getMovies();
+        // console.log(movies);
 
-    // creates array of movie titles
-    const movieTitles = movies.map((movie) => {
-        return movie.title;
-    });
-    // console.log(movieTitles);
+        // creates array of movie titles
+        const movieTitles = movies.map((movie) => {
+            return movie.title;
+        });
+        // console.log(movieTitles);
 
-    // Contacts movie poster api to generate poster images for movies
-    // maps result to create arr of just the poster images
-    let moviePosters = [];
-    const getThePosters = async () => {
-        for (let i = 0; i < movieTitles.length; i += 1) {
-            await $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&query=" + `${movieTitles[i]}` + "&callback=?", function (json) {
-                let posterData = '';
-                if (json != "Nothing found.") {
-                    // console.log(json.results[0].poster_path);
-                    posterData = json.results[0].poster_path;
-                    moviePosters.push(posterData);
-                }
-            });
+        // Contacts movie poster api to generate poster images for movies
+        // maps result to create arr of just the poster images
+        let moviePosters = [];
+        const getThePosters = async () => {
+            for (let i = 0; i < movieTitles.length; i += 1) {
+                await $.getJSON("https://api.themoviedb.org/3/search/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&query=" + `${movieTitles[i]}` + "&callback=?", function (json) {
+                    let posterData = '';
+                    if (json != "Nothing found.") {
+                        // console.log(json.results[0].poster_path);
+                        posterData = json.results[0].poster_path;
+                        moviePosters.push(posterData);
+                    }
+                });
+            }
         }
-    }
 
-    console.log(moviePosters)
+        console.log(moviePosters)
 
-    await getThePosters();
+        await getThePosters();
 
 
-    // Creates and dynamically writes html based of movies array
-    const writeHtml = () => {
+        // Creates and dynamically writes html based of movies array
+        const writeHtml = () => {
 
-        let dynamicHtml = ``;
+            let dynamicHtml = ``;
 
-        for (let i = 0; i < movies.length; i++) {
-            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}" data-title="${movies[i].title}" data-year="${movies[i].year}" data-genre="${movies[i].genre}" data-rating="${movies[i].rating}">
+            for (let i = 0; i < movies.length; i++) {
+                dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}" data-title="${movies[i].title}" data-year="${movies[i].year}" data-genre="${movies[i].genre}" data-rating="${movies[i].rating}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
                                     <div class="col-6 d-flex justify-content-center"><img src="https://image.tmdb.org/t/p/w500/${moviePosters[i]}" class="poster-img" alt="current poster image"></div>
@@ -61,9 +62,9 @@
                                 </div>
                             </div>
                         </div>`
-        }
+            }
 
-        let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+            let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
@@ -73,14 +74,19 @@
                     </button>`
 
 
-        $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
+            $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
 
+        }
+
+        // Calling the function to write the html
+        writeHtml();
+
+        // end of page load
     }
 
-    // Calling the function to write the html
-    writeHtml();
+    await pageLoader();
 
-    // end of page load
+
 
     // event listeners
 
@@ -118,7 +124,7 @@
             rating: `${rating}`,
             genre: `${genre}`,
         })
-        location.reload();
+        await pageLoader();
         $(`#unhidden`).toggleClass(`hidden`);
     });
 
@@ -129,7 +135,7 @@
         await deleteMovie({
             id: currentID
         })
-        location.reload();
+        await pageLoader();
     })
 
     // btn for updating movie
@@ -152,8 +158,9 @@
                 rating: rating,
                 genre: genre
             })
-            location.reload();
-            // $(`#update-btn`).toggleClass(`hidden`);
+            await pageLoader();
+            $('[data-title].active').removeClass('active');
+            $(`.carousel-item[data-movie="${currentID}"]`).addClass('active');
             $(`#update-unhidden`).toggleClass(`hidden`);
         });
     });
