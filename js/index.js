@@ -44,7 +44,7 @@
             dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" data-movie="${movies[i].id}" data-title="${movies[i].title}" data-year="${movies[i].year}" data-genre="${movies[i].genre}" data-rating="${movies[i].rating}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
-                                    <div class="col-6 d-flex justify-content-center"><img src="http://image.tmdb.org/t/p/w500/${moviePosters[i]}" class="poster-img" alt="current poster image"></div>
+                                    <div class="col-6 d-flex justify-content-center"><img src="https://image.tmdb.org/t/p/w500/${moviePosters[i]}" class="poster-img" alt="current poster image"></div>
                                     <div class="col-6 d-flex justify-content-between flex-column">
                                         <section>
                                             <h1 class="mb-4 mov-title">${movies[i].title}</h1>
