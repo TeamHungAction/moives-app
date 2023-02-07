@@ -179,11 +179,14 @@
         } catch (error) {
 
         }
+
+
+
         console.log(data[0].results);
         let dynamicHtml = ``;
         for (let i = 0; i < data[0].results.length ; i +=1){
-            console.log(data[0].results[i].title);
-            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" tmdb-title="${data[0].results[i].title}" tmdb-rating="${data[0].results[i].vote_average}">
+            console.log(data[0].results[i].id);
+            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" tmdb-title="${data[0].results[i].title}" tmdb-rating="${data[0].results[i].vote_average}" tmdb-id="${data[0].results[i].id}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
                                     <div class="col-6 d-flex justify-content-center"><img src="https://image.tmdb.org/t/p/w1280${data[0].results[i].poster_path}" class="poster-img" alt="current poster image"></div>
@@ -215,11 +218,33 @@
     $(document).on('click', '#add-btn-tmdb', async function(){
         let currentTmdbTitle = $(this).parents('.carousel-item').attr('tmdb-title');
         let currentTmdbRating = $(this).parents('.carousel-item').attr('tmdb-rating');
-        await addMovie({
-            title: currentTmdbTitle,
-            rating: currentTmdbRating
-        })
-        await pageLoader();
+        let currentTmdbId = $(this).parents('.carousel-item').attr('tmdb-id');
+        let data = [];
+        console.log(currentTmdbId);
+        try {
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${currentTmdbId}?api_key=${keys.tmdb}&language=en-US`);
+            const responseData = await response.json();
+            data.push(responseData);
+
+
+        } catch (error) {
+
+        }
+        // let genres = ``;
+        // data[0].genre.forEach((movie)=>{
+        //
+        // });
+        // loop through genres to get stringified data
+
+        console.log(data);
+        // await addMovie({
+        //     title: currentTmdbTitle,
+        //     rating: currentTmdbRating,
+        //     year: data[0].release_date.slice(`-`),
+        //     director: data[0].,
+        //     genre: data[0].
+        // })
+        // await pageLoader();
     })
 
 
