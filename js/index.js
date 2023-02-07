@@ -87,7 +87,6 @@
     await pageLoader();
 
 
-
     // event listeners
 
     //Filter and search function
@@ -96,37 +95,15 @@
         console.log(`btn clicked`);
         let searchValue = $('#search').val();
         // console.log(searchValue);
-        $('[data-title]').each(function(){
-           let title = $(this).attr('data-title');
-           if (title.toLowerCase() === searchValue.toLowerCase()){
-               // found a card with a matching title
-               $('[data-title].active').removeClass('active');
-               $(this).addClass('active');
-           }
+        $('[data-title]').each(function () {
+            let title = $(this).attr('data-title');
+            if (title.toLowerCase() === searchValue.toLowerCase()) {
+                // found a card with a matching title
+                $('[data-title].active').removeClass('active');
+                $(this).addClass('active');
+            }
         });
     })
-
-    // btn for adding movies
-    $('#add-btn').on('click', () => {
-        $(`#unhidden`).toggleClass(`hidden`)
-    })
-
-    $(`#movie-added`).on(`click`, async () => {
-        let title = $(`#title-user`).val();
-        let director = $(`#director-user`).val();
-        let year = $(`#year-user`).val();
-        let genre = $(`#genre-user`).val();
-        let rating = $(`#rating-user`).val();
-        await addMovie({
-            title: `${title}`,
-            year: `${year}`,
-            director: `${director}`,
-            rating: `${rating}`,
-            genre: `${genre}`,
-        })
-        await pageLoader();
-        $(`#unhidden`).toggleClass(`hidden`);
-    });
 
     // btn for deleting movie
 
@@ -135,6 +112,13 @@
         await deleteMovie({
             id: currentID
         })
+        $(`.cards-here`).html(`<div class="col d-flex justify-content-end align-items-center">
+                        <div class="dot-pulse"></div>
+                    </div>
+                    <h1 class="col loading-text justify-content-center">loading</h1>
+                    <div class="col d-flex align-items-center">
+                        <div class="dot-pulse"></div>
+                    </div>`);
         await pageLoader();
     })
 
@@ -158,17 +142,24 @@
                 rating: rating,
                 genre: genre
             })
+            $(`.cards-here`).html(`<div class="col d-flex justify-content-end align-items-center">
+                        <div class="dot-pulse"></div>
+                    </div>
+                    <h1 class="col loading-text justify-content-center">loading</h1>
+                    <div class="col d-flex align-items-center">
+                        <div class="dot-pulse"></div>
+                    </div>`);
+            $(`#update-unhidden`).addClass(`hidden`);
             await pageLoader();
             $('[data-title].active').removeClass('active');
             $(`.carousel-item[data-movie="${currentID}"]`).addClass('active');
-            $(`#update-unhidden`).toggleClass(`hidden`);
         });
     });
 
     // TMDB API
     const api_base_url = 'https://api.themoviedb.org/3/', image_base_url = 'https://image.tmdb.org/t/p/w1280';
 
-    $(document).on('click', '#submit-tmdb', async (e) =>{
+    $(document).on('click', '#submit-tmdb', async (e) => {
         e.preventDefault();
         const search = $('#search-tmdb').val();
         let data = []
@@ -181,20 +172,18 @@
         }
 
 
-
         console.log(data[0].results);
         let dynamicHtml = ``;
-        for (let i = 0; i < data[0].results.length ; i +=1){
+        for (let i = 0; i < data[0].results.length; i += 1) {
             console.log(data[0].results[i].id);
             dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" tmdb-title="${data[0].results[i].title}" tmdb-rating="${data[0].results[i].vote_average}" tmdb-id="${data[0].results[i].id}">
                             <div class="container d-flex carousel-card">
                                 <div class="row flex-grow-1 d-flex card-row">
                                     <div class="col-6 d-flex justify-content-center"><img src="https://image.tmdb.org/t/p/w1280${data[0].results[i].poster_path}" class="poster-img" alt="current poster image"></div>
                                     <div class="col-6 d-flex justify-content-between flex-column">
-                                        <section>
-                                            <h1 class="mb-4 mov-title">${data[0].results[i].title}</h1>
-                                            <h5 class="mov-rating mt-2">Rating: ${data[0].results[i].vote_average}</h5>
-                                            <button class="me-5" id="add-btn-tmdb">Add to library</button>  
+                                        <section">
+                                            <h1 class="mb-5 mov-title special-size">${data[0].results[i].title}</h1>
+                                            <button class="me-5 mt-5" id="add-btn-tmdb">Add to library</button>  
                                         </section>                                      
                                     </div>
                                 </div>
@@ -215,7 +204,7 @@
     });
 
     //add movie to library from TMDB
-    $(document).on('click', '#add-btn-tmdb', async function(){
+    $(document).on('click', '#add-btn-tmdb', async function () {
         let currentTmdbTitle = $(this).parents('.carousel-item').attr('tmdb-title');
         let currentTmdbRating = $(this).parents('.carousel-item').attr('tmdb-rating');
         let currentTmdbId = $(this).parents('.carousel-item').attr('tmdb-id');
@@ -230,21 +219,36 @@
         } catch (error) {
 
         }
-        // let genres = ``;
-        // data[0].genre.forEach((movie)=>{
-        //
-        // });
-        // loop through genres to get stringified data
+        let director = [];
+        try {
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${currentTmdbId}/credits?api_key=${keys.tmdb}&language=en-US`);
+            const responseData = await response.json();
+            director.push(responseData);
+
+        } catch (error) {
+
+        }
+        console.log(director);
+
+        let yearArr = data[0].release_date.split(``)
+        let year = yearArr[0] + yearArr[1] + yearArr[2] + yearArr[3];
 
         console.log(data);
-        // await addMovie({
-        //     title: currentTmdbTitle,
-        //     rating: currentTmdbRating,
-        //     year: data[0].release_date.slice(`-`),
-        //     director: data[0].,
-        //     genre: data[0].
-        // })
-        // await pageLoader();
+        await addMovie({
+            title: currentTmdbTitle,
+            rating: currentTmdbRating,
+            year: year,
+            director: director[0].crew.find(member => member.job === "Director").name,
+            genre: data[0].genres[0].name
+        })
+        $(`.cards-here`).html(`<div class="col d-flex justify-content-end align-items-center">
+                        <div class="dot-pulse"></div>
+                    </div>
+                    <h1 class="col loading-text justify-content-center">loading</h1>
+                    <div class="col d-flex align-items-center">
+                        <div class="dot-pulse"></div>
+                    </div>`);
+        await pageLoader();
     })
 
 
