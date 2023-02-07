@@ -143,6 +143,10 @@ h1 {
     animation-delay: 0.5s;
 }
 
+.special-size {
+    font-size: 100px;
+}
+
 @keyframes dot-pulse-before {
     0% {
         box-shadow: 9984px 0 0 -5px;
