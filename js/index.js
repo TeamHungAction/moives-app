@@ -31,7 +31,7 @@
             }
         }
 
-        console.log(moviePosters)
+        // console.log(moviePosters)
 
         await getThePosters();
 
@@ -95,7 +95,7 @@
         e.preventDefault();
         console.log(`btn clicked`);
         let searchValue = $('#search').val();
-        console.log(searchValue);
+        // console.log(searchValue);
         $('[data-title]').each(function(){
            let title = $(this).attr('data-title');
            if (title.toLowerCase() === searchValue.toLowerCase()){
@@ -164,4 +164,27 @@
             $(`#update-unhidden`).toggleClass(`hidden`);
         });
     });
+
+    // TMDB API
+    const api_base_url = 'https://api.themoviedb.org/3/', image_base_url = 'https://image.tmdb.org/t/p/w1280';
+
+    $(document).on('click', '#submit-tmdb', async (e) =>{
+        e.preventDefault();
+        const search = $('#search-tmdb').val();
+        let data = []
+        try {
+            const response = await fetch(`${api_base_url}search/movie/?api_key=${keys.tmdb}&query=${search}`)
+            console.log(response);
+            const responseData = await response.json()
+            data.push(responseData)
+        } catch (error) {
+
+        }
+        console.log(data);
+
+
+    })
+
+
+
 })();
