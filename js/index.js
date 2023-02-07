@@ -174,17 +174,53 @@
         let data = []
         try {
             const response = await fetch(`${api_base_url}search/movie/?api_key=${keys.tmdb}&query=${search}`)
-            console.log(response);
             const responseData = await response.json()
             data.push(responseData)
         } catch (error) {
 
         }
-        console.log(data);
+        console.log(data[0].results);
+        let dynamicHtml = ``;
+        for (let i = 0; i < data[0].results.length ; i +=1){
+            console.log(data[0].results[i].title);
+            dynamicHtml += `<div class="carousel-item ${i === 0 ? 'active' : ''}" tmdb-title="${data[0].results[i].title}" tmdb-rating="${data[0].results[i].vote_average}">
+                            <div class="container d-flex carousel-card">
+                                <div class="row flex-grow-1 d-flex card-row">
+                                    <div class="col-6 d-flex justify-content-center"><img src="https://image.tmdb.org/t/p/w1280${data[0].results[i].poster_path}" class="poster-img" alt="current poster image"></div>
+                                    <div class="col-6 d-flex justify-content-between flex-column">
+                                        <section>
+                                            <h1 class="mb-4 mov-title">${data[0].results[i].title}</h1>
+                                            <h5 class="mov-rating mt-2">Rating: ${data[0].results[i].vote_average}</h5>
+                                            <button class="me-5" id="add-btn-tmdb">Add to library</button>  
+                                        </section>                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+        }
+        let btnHtml = `<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>`
 
 
+        $(`.cards-here`).html(`<div class="carousel-inner"> ${dynamicHtml} </div> ${btnHtml}`);
+    });
+
+    //add movie to library from TMDB
+    $(document).on('click', '#add-btn-tmdb', async function(){
+        let currentTmdbTitle = $(this).parents('.carousel-item').attr('tmdb-title');
+        let currentTmdbRating = $(this).parents('.carousel-item').attr('tmdb-rating');
+        await addMovie({
+            title: currentTmdbTitle,
+            rating: currentTmdbRating
+        })
+        await pageLoader();
     })
-
 
 
 })();
